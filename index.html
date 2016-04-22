@@ -45,7 +45,7 @@ frame.on("ready", function() {
 	zim.OPTIMIZE = true;
 	zim.Ticker.update = true; // will update stage for anything in ticker queue
 
-	frame.loadAssets(["back.jpg", "next.mp3", "tip.mp3","zim.mp3","end.png"], "assets/");
+	frame.loadAssets(["back.jpg", "end.png"], "assets/");
 	frame.completeEvent = frame.on("complete", app);
 
 	var waiter = new zim.Waiter(stage, null, "#333", "#999", 0);
@@ -103,55 +103,11 @@ frame.on("ready", function() {
 		var trim = new zim.Rectangle(indicator.width, indicator.width*.025, backingColor);
 		middle.addChild(trim);
 
-
-		// //////////////////  HINT  ///////////////////////
-
-		// var hintBut = new zim.Button({
-		// 	label: "HINT",
-		// 	corner: 0,
-		// 	color:frame.orange,
-		// 	width:120,
-		// 	height:50,
-		// 	shadowColor:-1,
-		// 	borderColor:frame.dark
-		// });
-		// zim.expand(hintBut);
-		// var hint = hintBut;
-		// hints = ["SAME BUT DIFFERENT", "PAST START", "SAYS ME", "HEAD PHONES", "WRONG DOTS", "CLOSE OLD", "MORSE CHAR", "SHARE WITH FRIENDS"];
-		// var hintText = zim.Label(hints[0], 24, null, frame.dark);
-		// hintText.originalWidth = hintText.width;
-
-		// hintBut.on("mousedown", function() {
-		// 	stage.removeChild(hintBut);
-		// 	stage.addChild(hintText);
-		// 	frame.asset("tip.mp3").play();
-		// 	zog("Tip");
-		// 	hint = hintText;
-		// 	stage.update();
-		// });
-
-
 		//////////////////  ZIM  ///////////////////////
 
 		var circles = frame.makeCircles(stageW/8);
 		circles.cursor = "pointer";
 		circles.on("mousedown", function(){zgo("http://zimjs.com", "_blank")});
-
-
-		// //////////////////  LOGO  ///////////////////////
-
-		// var logoBlur = new createjs.Shape();
-		// logoBlur.graphics.f("#000000").s().p("AkdEKQg5g+AAh2IAAmOIC7AAIAAGOQAAA5AoAAQAoAAAAg5IAAmOIC4AAIAAGUQAABshABAQg+BAhqAAQhqAAg4g+gA2TiHIiBAAIAAi0IEPABIBeDYIACAGIBfjeIDQAAIkxJ6gASgE5ICOm9IjAAAIAAi0IGnAAIi2JxgAKdE5IAAm9IiOAAIAAi0IHXAAIAAC0IiOAAIAAG9gADcE5IAAi0IAAAAIAAm9IC6AAIAAG9ICPAAIAAC0gApqE5IAAiVIhUAAIAACVIi6AAIAAmNQAAhzA/hAQAvgvBKgNQAagEAeAAQAfAAAaAEQBEAMAmAqQA1A6AAB5IAAGTgAq+hOIAABOIBUAAIAAhOQAAgkgJgPQgJgOgWAAQgsAAAABBg");
-		// stage.addChild(logoBlur);
-		// logoBlur.alpha = .4;
-		// logoBlur.setBounds(-156,-32,312,64);
-
-		// var logo = logoBlur.clone();
-		// stage.addChild(logo);
-		// logo.alpha = .45;
-		// logo.shadow = new createjs.Shadow("rgba(0,0,0,.2)", 2, 2, 2);
-		// logo.setBounds(-156,-32,312,64);
-
 
 		//////////////////  SHUTTER  ///////////////////////
 
@@ -166,9 +122,7 @@ frame.on("ready", function() {
 
 		function scaleSafe() {
 			zim.scaleTo(image, stage, 100, 100, "biggest");
-			// zim.scale(hintBut, stageW/hintBut.width*.2);
-			// zim.scale(hintText, stageW/hintText.originalWidth*.6);
-
+		
 			var g = safe.graphics;
 			var corner = stageH*.1;
 			g.c().f("#fff").rr(0,0,stageW,stageH,corner);
@@ -177,28 +131,10 @@ frame.on("ready", function() {
 			zim.fit(middle, 0, 0, stageW, stageH);
 			var margin = Math.min(stageW, stageH)*.05;
 
-			// logo.rotation = 0;
-			// logoBlur.rotation = 0;
+		
 			var space = (stageH-middle.getBounds().height*middle.scaleX)/2;
-			// stage.addChild(logo, logoBlur,circles);
-			// zim.scale(logoBlur, space/logoBlur.getBounds().height*.36);
-			// logoBlur.y = space/2*1.08;
-			// logoBlur.x = stageW/2*.98;
+			
 			var blurFilter = new createjs.BlurFilter(70,0,.4);
-			// logoBlur.filters = [blurFilter];
-			// var bounds = logoBlur.getBounds();
-			// logoBlur.cache(-50+bounds.x, -50+bounds.y, 100+bounds.width, 100+bounds.height);
-
-			// zim.scale(logo, logoBlur.scaleX);
-			// logo.y = logoBlur.y;
-			// logo.x = logoBlur.x;
-			// bounds = logo.getBounds();
-			// logo.cache(-50+bounds.x, -50+bounds.y, 100+bounds.width, 100+bounds.height);
-
-			// hintBut.rotation = hintText.rotation = 0;
-			// hintBut.x = hintText.x = stageW*.1;
-			// hintBut.y = hintText.y = stageH - (space + hintBut.height*hintBut.scaleX)/2;
-			// hintText.y += 6;
 
 			zim.scale(circles, Math.min(space/circles.height*.8, stageW/circles.width*.17));
 			circles.x = stageW*.85;
@@ -226,7 +162,7 @@ frame.on("ready", function() {
 
 			stage.addChild(shutter);
 
-			frame.asset("next.mp3").play();
+	
 
 			shutter.x = stageW;
 			shutter.y = shutterY;
@@ -291,9 +227,6 @@ frame.on("ready", function() {
 
 <body>
 <!-- canvas with id="myCanvas" is made by zim Frame -->
-<script>
-// var r=Math.round(Math.random()*1000000);
-// document.write('<img src=http://danzen.com/cgi-bin/traffic_plus?company=danzen&page=vault7&r='+r+' width=1 height=1>');
-</script>
+
 </body>
 </html>

@@ -10,10 +10,6 @@ var panels = function(panels) {
         panel.addChild(backing);
 
 
-        var sound = frame.asset("zim.mp3").play();
-        sound.volume = .3;
-        sound.loop = -1;
-
         //////////////////  MESSAGE  ///////////////////////
 
         var message = frame.asset("end.png");
