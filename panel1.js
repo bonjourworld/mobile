@@ -12,7 +12,9 @@ var panels = function(panels) {
         //////////////////  VALUE TO GUESS /////////////
 
         var dialKey = panel.dialKey = zim.rand(1,4) + "" + zim.rand(1,4)+ "" + zim.rand(1,4)+ "" + zim.rand(1,4);
-        console.log(dialKey);
+        console.log("code to decipher:",dialKey);
+
+        
 
         //////////////////  PAD  ///////////////////////
 
@@ -22,6 +24,7 @@ var panels = function(panels) {
         pad = new zim.Pad({
             width: 270,
             cols: 2,
+            rows:2,
             keys: [1,2,3,4],
             color: frame.dark,
             rollColor: frame.blue,
@@ -30,36 +33,93 @@ var panels = function(panels) {
 
         pad.alpha = .8;
         var margin = backing.width*.07;
-        pad.x = (backing.height-pad.height-margin)/2;
-        pad.y = (backing.height-pad.height-margin)/7;
+        pad.x = (backing.width-pad.width-margin)/2;
+        pad.y = (backing.height-pad.height)/4;
         panel.addChild(pad);
 
-        var digit = new zim.Tabs((pad.width-2)*4/3, (pad.width-2)/3, [padKey.substr(0,1), padKey.substr(1,1),padKey.substr(2,1), padKey.substr(3,1)], frame.blue, frame.blue, frame.blue, 3);
+        var title = new zim.Tabs(608, 67, ["CIPHER> Tap 4 numbers,decipher the code"],  "#7a797a", "#7a797a", "#7a797a", 3,false,0,"white");
+        title.enabled = false;
+        panel.addChild(title);
+        title.x = (backing.width-title.width)/2;
+        title.y = (backing.height-pad.height-margin)/25;
+
+        ////moves ///
+
+        //current play
+        var played = new zim.Tabs((pad.width-2)*4/3, (pad.width-2)/4, ["Current Move"], frame.black, frame.black, frame.black, 3);
+        played.enabled = false;
+        panel.addChild(played);
+        played.x = margin;
+        played.y = pad.y + pad.height *2/3+ played.height*2;
+
+        //current play
+        var digit = new zim.Tabs((pad.width-2)*4/3, (pad.width-2)/4, [padKey.substr(0,1), padKey.substr(1,1),padKey.substr(2,1), padKey.substr(3,1)], frame.blue, frame.blue, frame.blue, 3);
         digit.enabled = false;
         panel.addChild(digit);
-        digit.x = margin
-        digit.y = pad.y + pad.height *2/3 + digit.height*2 +2;
-        // digit.shadow = new createjs.Shadow("rgba(0,0,0,.3)", 5, 5, 10);
+        digit.x = margin;
+        digit.y = played.y+digit.height;
 
-        var lastPlay = new zim.Tabs((pad.width-2)*4/3, (pad.width-2)/3, [padKey.substr(0,1), padKey.substr(1,1),padKey.substr(2,1), padKey.substr(3,1)],  frame.pink, frame.pink, frame.pink, 3);
+        //last play label
+        var moved = new zim.Tabs((pad.width-2)*4/3, (pad.width-2)/4, ["Last Move"], frame.black, frame.black, frame.black, 3);
+        moved.enabled = false;
+        panel.addChild(moved);
+        moved.x = margin;
+        moved.y = digit.y +moved.height;
+
+        // last play
+        var lastPlay = new zim.Tabs((pad.width-2)*4/3, (pad.width-2)/4, [padKey.substr(0,1), padKey.substr(1,1),padKey.substr(2,1), padKey.substr(3,1)],  frame.pink, frame.pink, frame.pink, 3);
         lastPlay.enabled = false;
         panel.addChild(lastPlay);
         lastPlay.x = margin;
-        lastPlay.y = backing.height-lastPlay.height-margin;
+        lastPlay.y = moved.y+lastPlay.height;
 
-        var ok = new zim.Tabs((pad.width-2)/3, (pad.width-2)/3, [padKey.substr(0,1)],  frame.green, frame.green, frame.green, 3);
+        //ok label
+        var ok = new zim.Tabs((pad.width-2)/3, (pad.width-2)/4, ["☺"],  frame.black, frame.black, frame.black, 3);
         ok.enabled = false;
         panel.addChild(ok);
         ok.x = lastPlay.x+margin+lastPlay.width;
-        ok.y = backing.height-ok.height-margin;
+        ok.y = moved.y;
+        //ok
+        var ok = new zim.Tabs((pad.width-2)/3, (pad.width-2)/4, [padKey.substr(0,1)],  "seagreen", "seagreen", "seagreen", 3,false,0,"white");
+        ok.enabled = false;
+        panel.addChild(ok);
+        ok.x = lastPlay.x+margin+lastPlay.width;
+        ok.y = moved.y+lastPlay.height;
 
-        var soso = new zim.Tabs((pad.width-2)/3, (pad.width-2)/3, [padKey.substr(0,1)],  frame.black, frame.black, frame.black, 3);
+        //so so label
+        var soso = new zim.Tabs((pad.width-2)/3, (pad.width-2)/4, ["meh"],  frame.black, frame.black, frame.black, 3);
         soso.enabled = false;
         panel.addChild(soso);
-        soso.x = ok.x+ok.width;
-        soso.y = backing.height-soso.height-margin;
+        soso.x = ok.x+ok.width+margin/25;
+        soso.y = moved.y;
+        //so so
+        var soso = new zim.Tabs((pad.width-2)/3, (pad.width-2)/4, [padKey.substr(0,1)],  "yellow", "yellow", "yellow", 3,false,0,"black");
+        soso.enabled = false;
+        panel.addChild(soso);
+        soso.x = ok.x+ok.width+margin/25;
+        soso.y = moved.y+lastPlay.height;
+
+        // instructions
+        // var key = new zim.Tabs((pad.width-2)/3, (pad.width-2)/4, ["key->"],  frame.black , frame.black, frame.black, 3);
+        // key.enabled = false;
+        // panel.addChild(key);
+        // key.x = margin;
+        // key.y = soso.y+key.height*5/3;
+
+        var instructions = new zim.Tabs((pad.width*9/4), (pad.width-2)/4, ["☺ = numbers in their real postion"],  "#aeadae" , "#aeadae", "#aeadae", 3,false,0,"black");
+        instructions.enabled = false;
+        panel.addChild(instructions);
+        instructions.x = margin;
+        instructions.y = soso.y+instructions.height*2;
+
+        var instructions2 = new zim.Tabs((pad.width*9/4), (pad.width-2)/4, ["meh = numbers in a wrong position"],  "#aeadae" , "#aeadae", "#aeadae", 3,false,0,"black");
+        instructions2.enabled = false;
+        panel.addChild(instructions2);
+        instructions2.x = margin;
+        instructions2.y = instructions.y+instructions.height;
 
         pad.on("change", padChange);
+
 
 
 
@@ -97,7 +157,6 @@ var panels = function(panels) {
             }
 
             if(edit==false){  
-                console.log(edit);
                 padKey = "?" + "" + "?"+ "" + "?"+ "" + "?";
                 edit=true; 
                    
@@ -107,9 +166,6 @@ var panels = function(panels) {
 
         var yay=0;
         function goodies(){
-
-            // console.log("last",displayLast);
-            // console.log("dial",dialKey.split(""));
             if(yay<4){
                 for(var k=0;k<dialKey.split("").length;k++){
                     if(displayLast[k]=="?"){
@@ -130,41 +186,75 @@ var panels = function(panels) {
             }
         }
 
-        var meh=0;
-        var already=[];
-        var copy = dialKey.split("").slice(0);
+        var meh=0; 
+        //saves each integer in the code just once
+        var uniqueInCode= []; 
+        //counts the times each integer in the code has been pressed by the user
+        var countUnique=[];
+        //counts the times each integer in the code appears in the code
+        var countUniqueInCode=[];
+        //temp variable to compare to substract the correct inputs from the total inputs and know which ones are off place
+        var totalCount=0;
 
         function almost(){
 
-            console.log("last",displayLast);
-            console.log("copy",copy);
-            if(meh<4){
-                for(var k=0;k<copy.length;k++){
-                    if(displayLast[k]=="?"){
-                        meh=0;
-                        break;
-                    }else{
-                        if(copy.indexOf(displayLast[k])>=0 && already.indexOf(displayLast[k])==-1){
-                            var dataset = copy;
-                            var search = displayLast[k];
-                            var count = dataset.filter(function(val){
-                                return val === search;
-                            }).length;
-                            console.log("count",count);
-                            meh+=count;
-                            copy[k]==-1;
-                            already.push(displayLast[k])
-                        }
-                    }  
+            for(var k=0;k<dialKey.split("").length;k++){
+                
+                if(uniqueInCode.indexOf(dialKey.split("")[k])==-1){
+                    uniqueInCode.push(dialKey.split("")[k]);
+                }
+            }
+            console.log("unique in code:",uniqueInCode);
 
-                } 
-                  
-                      soso.labels[0].text=meh-yay; 
+
+            for(var l = 0; l<uniqueInCode.length;l++){
+                
+                for(var m =0; m<displayLast.length;m++){
+                    var unique = countUnique[l];
+                    if(displayLast[m]=="?"){
+                        totalCount=0;
+                        countUnique[l]=0;
+                        break;
+                    }else if(uniqueInCode[l]==displayLast[m]){
+                        unique++;
+                        countUnique[l]=unique;
+                    }
+                }
+
+            }
+            console.log("count unique",countUnique);
+
+            for(var o = 0; o<uniqueInCode.length;o++){
+
+                for(var p =0; p<dialKey.split("").length;p++){
+                    var unique2 = countUniqueInCode[o];
                    
-                   
-            }else{
-                meh=0;
-            }    
+                    if(displayLast[p]=="?"){
+                        totalCount=0;
+                        countUniqueInCode[o]=0;
+                        break;
+                    }else if(uniqueInCode[o]==dialKey.split("")[p]){
+                        unique2++;
+                        countUniqueInCode[o]=unique2;
+                    }
+                }
+
+            }
+            console.log("count unique in code:",countUniqueInCode);
+
+            for(var n=0; n<uniqueInCode.length;n++){
+                if(countUnique[n]>countUniqueInCode[n]){
+                    totalCount+=countUniqueInCode[n];
+                }else{
+                    totalCount+=countUnique[n];
+                }
+            }
+
+            meh=totalCount-yay;
+            
+            soso.labels[0].text=meh;
+
+              
         }
 
         function test() {
@@ -173,7 +263,7 @@ var panels = function(panels) {
             if(dialKey.split("").toString()==displayLast.toString()){
                   panel.dispatchEvent("pass");
             }
-          
+
         }
 
         panel.dispose = function() {

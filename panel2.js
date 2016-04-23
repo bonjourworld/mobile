@@ -16,7 +16,7 @@ var panels = function(panels) {
         zim.scaleTo(message, panel, 100, 100);
         panel.addChild(message);
         panel.cursor = "pointer";
-        panel.on("click", function(){zgo("http://zimjs.com/code/", "_blank")});
+        panel.on("click", function(){zgo("http://www.roussel.io/", "_blank")});
 
         return panel;
     }

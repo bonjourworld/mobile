@@ -4,7 +4,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="user-scalable=no, minimal-ui, shrink-to-fit=no" />
-<title>Vault 7 - Open Safe Puzzle - Dan Zen</title>
+<title>Mastermind - Mind Puzzle - James Roussel</title>
+
+<!-- Based on Vault7 http://danzen.com/vault7 by DanZen and ZIMjs http://www.zimjs.com
+ -->
 
 <!-- for CreateJS and ZIMjs http://zimjs.com - free to modify - Dan Zen 2015 -->
 <!-- see http://zimjs.com/templates for more templates and meta tags -->
@@ -103,11 +106,6 @@ frame.on("ready", function() {
 		var trim = new zim.Rectangle(indicator.width, indicator.width*.025, backingColor);
 		middle.addChild(trim);
 
-		//////////////////  ZIM  ///////////////////////
-
-		var circles = frame.makeCircles(stageW/8);
-		circles.cursor = "pointer";
-		circles.on("mousedown", function(){zgo("http://zimjs.com", "_blank")});
 
 		//////////////////  SHUTTER  ///////////////////////
 
@@ -116,6 +114,8 @@ frame.on("ready", function() {
 		var shutterY;
 
 
+
+		
 		//////////////////  SCALING  ///////////////////////
 
 		scaleSafe();
@@ -130,15 +130,10 @@ frame.on("ready", function() {
 
 			zim.fit(middle, 0, 0, stageW, stageH);
 			var margin = Math.min(stageW, stageH)*.05;
-
 		
 			var space = (stageH-middle.getBounds().height*middle.scaleX)/2;
 			
 			var blurFilter = new createjs.BlurFilter(70,0,.4);
-
-			zim.scale(circles, Math.min(space/circles.height*.8, stageW/circles.width*.17));
-			circles.x = stageW*.85;
-			circles.y = stageH-space/2;
 
 			indicator.rotation = 0;
 			indicator.x = 0;
@@ -161,15 +156,10 @@ frame.on("ready", function() {
 		function nextLevel() {
 
 			stage.addChild(shutter);
-
-	
-
 			shutter.x = stageW;
 			shutter.y = shutterY;
 
 			middle.cache(0,0,middle.getBounds().width,middle.getBounds().height);
-
-			// play sound
 
 			// animate shutter and swap panels
 			zim.move({
@@ -188,10 +178,6 @@ frame.on("ready", function() {
 							panel.off("pass", nextLevel);
 							panel.dispose();
 							middle.uncache();
-
-							// stage.removeChild(hintText);
-							// stage.addChild(hintBut);
-							// hintText.text = hints[indicator.selectedIndex+1];
 
 							// add new panel
 							panel = panels["makePanel"+(indicator.selectedIndex+1)](frame);
